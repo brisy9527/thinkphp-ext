@@ -14,9 +14,9 @@
   },
   "autoload":{
     "psr-4":{
-      "fycross\\captcha\\":"fycross/captcha/src/",
-      "fycross\\redis\\":"fycross/redis/src/",
-      "fycross\\cache\\":"fycross/cache/src/"
+      "fycross\\captcha\\":"captcha/src/",
+      "fycross\\redis\\":"redis/src/",
+      "fycross\\cache\\":"cache/src/"
     }
   }
 }
