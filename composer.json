@@ -1,0 +1,23 @@
+{
+  "name": "fycross/thinkphp-ext",
+  "description": "thinkphp扩展",
+  "type": "library",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "brisy",
+      "email": "961627404@qq.com"
+    }
+  ],
+  "minimum-stability": "stable",
+  "require": {
+  },
+  "autoload":{
+    "psr-4":{
+      "fycross\\captcha\\":"fycross/captcha/src/",
+      "fycross\\redis\\":"fycross/redis/src/",
+      "fycross\\cache\\":"fycross/cache/src/"
+    }
+  }
+}
+
