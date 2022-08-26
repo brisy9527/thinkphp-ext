@@ -16,7 +16,8 @@
     "psr-4":{
       "fycross\\captcha\\":"captcha/src/",
       "fycross\\redis\\":"redis/src/",
-      "fycross\\cache\\":"cache/src/"
+      "fycross\\cache\\":"cache/src/",
+      "fycross\\common\\":"common/src/"
     }
   }
 }
