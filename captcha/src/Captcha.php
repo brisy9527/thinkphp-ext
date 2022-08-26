@@ -37,27 +37,27 @@ class Captcha extends \think\captcha\Captcha
 
         if ($this->math) {
             $this->useZh = false;
-            $num = rand(1, 3);
-            switch ($num){
+            $num         = rand(1, 3);
+            switch ($num) {
                 case 1:
-                    $num1  = mt_rand(1, 20);
-                    $num2  = mt_rand(1, $num1);
+                    $num1 = mt_rand(1, 20);
+                    $num2 = mt_rand(1, $num1);
                     $key  = $num1 + $num2;
-                    $bag = "{$num1} + {$num2} = ";
+                    $bag  = "{$num1} + {$num2} = ";
                     break;
                 case 2:
-                    $num1  = mt_rand(1, 20);
-                    $num2  = mt_rand(1, $num1);
+                    $num1 = mt_rand(1, 20);
+                    $num2 = mt_rand(1, $num1);
                     $num1 == $num2 && ($num1 = $num1 + mt_rand($num1 + 1, 25));
-                    $key  = $num1 - $num2;
+                    $key = $num1 - $num2;
                     $bag = "{$num1} - {$num2} = ";
                     break;
                 case 3:
                 default :
-                    $num1  = mt_rand(1, 9);
-                    $num2  = mt_rand(1, $num1);
+                    $num1 = mt_rand(1, 9);
+                    $num2 = mt_rand(1, $num1);
                     $key  = $num1 * $num2;
-                    $bag = "{$num1} X {$num2} = ";
+                    $bag  = "{$num1} X {$num2} = ";
                     break;
             }
         } else {
@@ -74,47 +74,38 @@ class Captcha extends \think\captcha\Captcha
             $key = mb_strtolower($bag, 'UTF-8');
         }
 
-        $hash = password_hash($key, PASSWORD_BCRYPT, ['cost' => 10]);
-        $uuid = $this->createUuid();
+        $hash = password_hash($key, PASSWORD_BCRYPT, [ 'cost' => 10 ]);
+        $uuid = $this->getUuid();
         $this->save($hash, $uuid);
         header("Captcha:{$uuid}");
         header("Access-Control-Expose-Headers:Captcha");
-
         return [
             'value' => $bag,
             'key'   => $hash,
         ];
     }
 
+    /**
+     * 验证验证码是否正确
+     * @param $code
+     * @return bool
+     * @throws \Psr\SimpleCache\InvalidArgumentException
+     */
     public function verify($code)
     {
-        $uuid     = $this->session->getId();
+        $uuid     = $this->getUuid();
         $cacheKey = $this->getCacheKey($uuid);
         $codeHash = Cache::store('redis')->get($cacheKey);
-        $code = mb_strtolower($code, 'UTF-8');
-        $result = password_verify($code, $codeHash);
+        $code     = mb_strtolower($code, 'UTF-8');
+        $result   = password_verify($code, $codeHash);
         if ($result) {
             Cache::store('redis')->delete($cacheKey);
         }
         return $result;
     }
 
-    /**
-     * 验证验证码是否正确
-     * @access public
-     * @param string $code 用户验证码
-     * @return bool 用户验证码是否正确
-     */
-    public function check(string $code): bool
-    {
-        $code = mb_strtolower($code, 'UTF-8');
 
-        $res = password_verify($code, $this->codeHash);
-
-        return $res;
-    }
-
-    protected function createUuid()
+    protected function getUuid()
     {
         return $this->session->getId();
     }
