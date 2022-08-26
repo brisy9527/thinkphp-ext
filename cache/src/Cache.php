@@ -10,7 +10,6 @@ namespace fycross\cache;
 
 use fycross\redis\RedisPool;
 use think\Exception;
-use fycross\cache\CacheFactory;
 
 class Cache
 {
@@ -90,6 +89,7 @@ class Cache
         if ($newInstance) {
             return new CacheFactory($class);
         }
+
         if (empty(self::$factory[$name])) {
             self::$factory[$name] = new CacheFactory($class);
         }
